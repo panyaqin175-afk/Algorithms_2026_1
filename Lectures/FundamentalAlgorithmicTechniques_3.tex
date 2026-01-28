@@ -1,0 +1,369 @@
+
+
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+
+\usepackage{amsmath}
+\usepackage{lmodern}
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{physics}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage{booktabs}
+\usetikzlibrary{mindmap, trees, shadows, shapes, calc, fadings, positioning, decorations.pathreplacing, intersections, shapes, arrows}
+
+\usetheme{default}
+\usepackage{graphics}
+
+\usepackage{color}
+\definecolor{new_turquoise}{RGB}{40,151,158}
+\setbeamercolor{title}{fg=new_turquoise}
+
+
+\makeatletter
+\setbeamertemplate{frametitle}{
+    \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+    \@tempdima=\textwidth%
+    \advance\@tempdima by\beamer@leftmargin%
+    \advance\@tempdima by\beamer@rightmargin%
+    \vspace*{0.8cm} 
+    \begin{beamercolorbox}[sep=0.3cm,center,wd=\the\@tempdima]{frametitle}
+        \usebeamerfont{frametitle}%
+        \vbox{}\vskip-1ex%
+        \if@tempswa\else\csname beamer@ftecenter\endcsname\fi%
+        \strut\insertframetitle\strut\par%
+        {%
+            \ifx\insertframesubtitle\@empty%
+            \else%
+            {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
+            \fi
+        }%
+        \vskip-1ex%
+        \if@tempswa\else\vskip-.3cm\fi
+    \end{beamercolorbox}%
+}
+\makeatother
+
+\setbeamercolor{frametitle}{fg=new_turquoise}
+\setbeamertemplate{itemize item}{\color{new_turquoise}$\blacksquare$}
+\setbeamertemplate{itemize subitem}{\color{new_turquoise}$\blacksquare$}
+
+
+\setbeamertemplate{enumerate item}{\color{new_turquoise}\insertenumlabel}
+\setbeamertemplate{enumerate subitem}{\color{new_turquoise}\insertsubenumlabel}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\setbeamercolor{section in toc}{fg=new_turquoise}
+\setbeamercolor{subsection in toc}{fg=new_turquoise}
+\setbeamercolor{subsubsection in toc}{fg=new_turquoise}
+
+
+
+
+
+
+\usebackgroundtemplate{
+    \includegraphics[width=\paperwidth,height=\paperheight]{figs/slide-title.jpg}
+} 
+
+\title{\fontsize{49}{7.2}{\bf Fundamental Algorithmic Techniques III}}
+\date{\color{new_turquoise}\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\usebackgroundtemplate{
+    \includegraphics[width=\paperwidth,height=\paperheight]{figs/slide-pages}
+} 
+
+
+\setbeamertemplate{subsection in toc}{
+  \color{new_turquoise}$\blacksquare$\color{black}~~\inserttocsubsection
+}
+
+
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+
+\section{Divide \& Conquer}
+
+
+
+\begin{frame}
+    \frametitle{Multiplying Square Matrices}
+    
+ $$\mathbf{C} = \mathbf{A} \cdot \mathbf{B},$$
+ $n \, \mathrm{operations} \, \forall i,\,j: \quad \quad \quad  c_{ij}= \sum_{k=0}^n a_{ik} \cdot b_{kj}.$
+
+\bigskip
+
+Divide and conquer:
+\[
+A = \begin{bmatrix}
+A_{11} & A_{12} \\
+A_{21} & A_{22}
+\end{bmatrix},
+\quad
+B = \begin{bmatrix}
+B_{11} & B_{12} \\
+B_{21} & B_{22}
+\end{bmatrix},
+\quad
+C = \begin{bmatrix}
+C_{11} & C_{12} \\
+C_{21} & C_{22}
+\end{bmatrix},
+\]
+\[
+\begin{bmatrix}
+\textcolor{red}{C_{11}} & \textcolor{green}{C_{12}} \\
+\textcolor{blue}{C_{21}} & \textcolor{yellow}{C_{22}}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\textcolor{red}{A_{11}B_{11} + A_{12}B_{21}} & \textcolor{green}{A_{11}B_{12} + A_{12}B_{22}} \\
+\textcolor{blue}{A_{21}B_{11} + A_{22}B_{21}} & \textcolor{yellow}{A_{21}B_{12} + A_{22}B_{22}}
+\end{bmatrix}.
+\tag{4.4}
+\]
+
+\bigskip
+
+Decomposing with 8 sub-operations: $T(n) = 8 T(n/2) + \Theta(1)$, \\ 
+so $\mathbf{T(n) = \Theta(n^3)}$ (master theorem 
+$c = 3 = log_2(8)$).
+
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Strassen Algorithm}
+
+$T(n) = 7 T(n/2) + \Theta(1)$,  
+so $\mathbf{T(n) = \Theta(n^{2.81})}$
+
+
+\footnotesize
+\begin{align*}
+M_1 &= (A_{11} + A_{22})(B_{11} + B_{22}) \\
+M_2 &= (A_{21} + A_{22}) B_{11} \\
+M_3 &= A_{11}(B_{12} - B_{22}) \\
+M_4 &= A_{22}(B_{21} - B_{11}) \\
+M_5 &= (A_{11} + A_{12}) B_{22} \\
+M_6 &= (A_{21} - A_{11})(B_{11} + B_{12}) \\
+M_7 &= (A_{12} - A_{22})(B_{21} + B_{22})
+\end{align*}
+
+\textbf{Result Blocks:}
+\begin{align*}
+C_{11} &= M_1 + M_4 - M_5 + M_7 \\
+C_{12} &= M_3 + M_5 \\
+C_{21} &= M_2 + M_4 \\
+C_{22} &= M_1 - M_2 + M_3 + M_6
+\end{align*}
+
+
+\end{frame}
+
+
+
+\begin{frame}
+\frametitle{Find Maximum: Divide and Conquer}
+
+\begin{columns}[T]
+\column{0.5\textwidth}
+\centering
+\includegraphics[width=0.9\linewidth]{Algos_figs/max_divide_conquer.png} 
+
+\column{0.5\textwidth}
+\textbf{Problem:} 
+Find the maximum element in an array of $n$ numbers.
+
+\vspace{1em}
+
+\textbf{Approach:}
+\begin{itemize}
+\item \textbf{Divide}: Split into two halves
+    \item \textbf{Conquer}: Recursively find max
+    \item \textbf{Combine}:  $\max(\text{left}, \text{right})$
+\end{itemize}
+\vspace{1em}
+\vspace{1em}
+
+\textbf{Complexity:} $T(n) = 2T(n/2) + cn$ \\ $\mathbf \Longrightarrow \mathcal{O}(n)$
+
+\end{columns}
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+    \frametitle{Sorting}
+
+{\bf Insertion sort:} $T(n) = an^2 + bn + c$, $a,\,b\,c, \, \in \mathbb{N}$\\
+So $T(N) = \mathcal{O}(n^2)$.
+
+
+\bigskip
+\bigskip
+
+But can we do better? \\
+Yes, actually $\mathcal{O}(n log(n))$ with MergeSort and QuickSort.
+\begin{figure}
+    \centering
+    \includegraphics[width=0.5\linewidth]{Algos_figs/merge_sort_2.png}
+    \caption{Merge Sort}
+\end{figure}
+    
+\end{frame}
+
+
+
+\section{Recurrence Relations}
+
+\begin{frame}
+    \frametitle{Recurrence Relation: Mathematical Description}
+    Let $ T(n) $ be a recurrence relation defined for $ n \geq 1 $ by:
+\[
+T(n) = a  T\left(\frac{n}{b}\right) + f(n)
+\]
+where:
+\begin{itemize}
+
+\item $ a \geq 1 $ is the number of subproblems in the recursion,
+    \item $ b > 1 $ is the factor by which the input size is reduced in each subproblem,
+    \item $ f(n) $ is the cost of dividing the problem and combining the results.
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{Recursive: Not always good!}
+\begin{table}[htbp]
+\centering
+\caption{Iterative vs Recursive Factorial: Complexity Comparison}
+\begin{tabular}{lcc}
+\toprule
+ & \textbf{Iterative} & \textbf{Recursive} \\
+\midrule
+Time Complexity & $O(n)$ & $O(n)$ \\
+Space Complexity & $O(1)$ & \textcolor{red}{$O(n)$} \\
+Stack Overflow? & No & \textcolor{red}{Yes} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\begin{figure}
+    \centering
+\includegraphics[width=0.4\linewidth]{Algos_figs/factorial_julia.png}
+    \caption{Factorial in Julia}
+\end{figure}
+
+\end{frame}
+
+
+
+
+\section{Master Theorem}
+
+\begin{frame}
+    \frametitle{Master Theorem}
+
+\small
+
+
+Asymptotic behavior of $T(n) = a \cdot T\left(\frac{n}{b}\right) + f(n)$:\\
+\textbf{critical exponent}: $c_{\text{crit}} = \log_b a$
+
+\footnotesize
+\begin{enumerate}
+    \item \textbf{Case 1 (Subproblem Dominated):} \\
+    If $ f(n) = O(n^c) $ where $ c < c_{\text{crit}} $, then:
+    \[
+    T(n) = \Theta(n^{\log_b a})
+    \]
+
+    \item \textbf{Case 2 (Balanced):} \\
+    If $ f(n) = \Theta(n^{c_{\text{crit}}}) $, then:
+    \[
+    T(n) = \Theta(n^{c_{\text{crit}}} \log n) = \Theta(n^{\log_b a} \log n)
+    \]
+
+    \item \textbf{Case 3 (Work Dominated):} \\
+    If $ f(n) = \Omega(n^c) $ where $ c > c_{\text{crit}} $, and if the \textbf{regularity condition} holds:
+    \[
+    a  f\left(\frac{n}{b}\right) \leq k  f(n) \quad \text{for constant } k < 1 \text{ and all sufficiently large } n,
+    \]
+    then:
+    \[
+    T(n) = \Theta(f(n))
+    \]
+\end{enumerate}
+    
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{Master Theorem : Limitations \&  Examples}
+
+\small
+
+{\bf Limitations:}
+\small
+\begin{itemize}
+    \item $T(n)$ not monotone, e.g. $T(n) = sin (n)$
+    \item $f(n)$ not polynomial, e.g. $f(n) = 2^n$
+    \item $a$ not a constant, e.g. $a = 2n$
+\end{itemize}
+
+\bigskip
+
+{\bf Examples:} verify!
+\begin{enumerate}
+    \item $T(n)=4T(\frac{n}{2})+n$, \\
+        $ \Rightarrow \mathrm{Case} \, 1$, Subproblem dominated,         $T(n)=\Theta (n^2)$
+    \item  $T(n)=2T(\frac{n}{2})+n$, \\
+    $ \Rightarrow \mathrm{Case} \, 2$, Balanced,  $T(n)=\Theta(nlog(n))$
+    \item $T(n) = 3T(\frac{n}{2}) + n^2$, \\
+    $ \Rightarrow \mathrm{Case} \, 3$, Work dominated,  $T(n)=\Theta(n^2)$
+
+    \item $T(n)=2T(2n)+nlog(n)$, \\
+    $ \Rightarrow$  trivially not applicable!
+    \item $T(n) = T(n-1) + 1$, \\
+    $ \Rightarrow$ Not applicable!  $n-1\neq n/b$, actually $T(n)=\Theta(n!)$
+\end{enumerate}    
+    
+\end{frame}
+
+
+
+\begin{frame}
+    \frametitle{Master Theorem : Proof with Tree Approach}
+
+$$T(n)=aT(\frac{n}{b})+f(n)$$
+
+\begin{itemize}
+    \item level 0: work $f(n)$, $a$ subproblems of size $n/b$
+    \item ...
+    \item level i: work \( a^i \cdot f(n/b^i) \), \( a^i \) subproblems of size \( n/b^i \) 
+\end{itemize}
+stops when $i=log_b(n)$, and using $a \cdot log_b (n) = n\cdot log_b (a)$:
+
+\[ T(n) = \textcolor{red}{\sum_{i=1}^{\log_b n} a^i \cdot f(n/b^i)} + \textcolor{green}{\Theta(n^{\log_b a})} ,\]
+with \textcolor{red}{work} and \textcolor{green}{leaf decomposition} contributions.\\
+\bigskip
+
+...Study each 3 cases separately for the proof...
+
+\end{frame}
+
+\end{document}

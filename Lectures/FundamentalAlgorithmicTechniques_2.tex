@@ -1,0 +1,348 @@
+
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+
+\usepackage{lmodern}
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{physics}
+\usepackage{graphicx}
+\graphicspath{ {./images/} }
+\usepackage{booktabs}
+\usetikzlibrary{mindmap, trees, shadows, shapes, calc, fadings, positioning, decorations.pathreplacing, intersections, shapes, arrows}
+
+\usetheme{default}
+\usepackage{graphics}
+
+\usepackage{color}
+\definecolor{new_turquoise}{RGB}{40,151,158}
+\setbeamercolor{title}{fg=new_turquoise}
+
+
+
+
+\makeatletter
+\setbeamertemplate{frametitle}{
+    \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+    \@tempdima=\textwidth%
+    \advance\@tempdima by\beamer@leftmargin%
+    \advance\@tempdima by\beamer@rightmargin%
+    \vspace*{0.8cm} 
+    \begin{beamercolorbox}[sep=0.3cm,center,wd=\the\@tempdima]{frametitle}
+        \usebeamerfont{frametitle}%
+        \vbox{}\vskip-1ex%
+        \if@tempswa\else\csname beamer@ftecenter\endcsname\fi%
+        \strut\insertframetitle\strut\par%
+        {%
+            \ifx\insertframesubtitle\@empty%
+            \else%
+            {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
+            \fi
+        }%
+        \vskip-1ex%
+        \if@tempswa\else\vskip-.3cm\fi
+    \end{beamercolorbox}%
+}
+\makeatother
+
+\setbeamercolor{frametitle}{fg=new_turquoise}
+\setbeamertemplate{itemize item}{\color{new_turquoise}$\blacksquare$}
+\setbeamertemplate{itemize subitem}{\color{new_turquoise}$\blacksquare$}
+
+
+\setbeamertemplate{enumerate item}{\color{new_turquoise}\insertenumlabel}
+\setbeamertemplate{enumerate subitem}{\color{new_turquoise}\insertsubenumlabel}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\setbeamercolor{section in toc}{fg=new_turquoise}
+\setbeamercolor{subsection in toc}{fg=new_turquoise}
+\setbeamercolor{subsubsection in toc}{fg=new_turquoise}
+
+
+
+\usebackgroundtemplate{
+    \includegraphics[width=\paperwidth,height=\paperheight]{figs/slide-title.jpg}
+} 
+
+\title{\fontsize{49}{7.2}{\bf Fundamental Algorithmic Techniques II}}
+\date{\color{new_turquoise}\today}
+
+\begin{document}
+\frame{\titlepage}
+
+\usebackgroundtemplate{
+    \includegraphics[width=\paperwidth,height=\paperheight]{figs/slide-pages}
+} 
+
+
+\setbeamertemplate{subsection in toc}{
+  \color{new_turquoise}$\blacksquare$\color{black}~~\inserttocsubsection
+}
+
+
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+\section{Definition and Importance of Algorithms}
+
+\begin{frame}
+    \frametitle{\bf Name and Definition}
+
+
+{\bf Definition} \\
+Explicit, precise and unambiguous instructions describing mechanically executable sequence to achieve specific purpose.\\
+\bigskip
+\bigskip 
+{\bf Algorithms} are omnipresent in modern world! \\In our understanding of the world! \\
+
+
+\bigskip 
+\bigskip
+{\bf Confused Name!}
+\begin{itemize}
+    \item $\alpha \lambda \gamma o \zeta$ (algos) = "pain", $\alpha \rho \iota \theta \mu o \zeta$ (arithmos)= "number"!?
+    \item Muhammad ibn Musa al-Khwarizmi, c.780--c.850\\
+    Algebra/Null,  born in/near Kazakhstan
+\end{itemize}
+Al-Khwarizmi $\longrightarrow$ "Algorism" in medieval Italy \\$\longrightarrow$ {\bf Algorithm} by "correction/confusion"
+
+\end{frame}
+
+
+\begin{frame}
+    \frametitle{\bf  Algorithms Description}
+
+\begin{enumerate}
+    \item {\bf What?} Specify the Problem
+    \item {\bf How?} Describe Algorithm (Pseudocode and english)
+    \item {\bf Why?} Proof (induction, ...)
+    \item {\bf Performance?} Analysis (time and space complexity, ...)
+    
+\end{enumerate}
+\bigskip 
+\bigskip 
+"Thinking and solving Algorithms":
+\begin{itemize}
+    \item {\bf Healthy, powerful Basis for thinking!}
+    \item Basis and support for Communication (1. \& 4.)!
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+\frametitle{\bf Importance of Algorithms for Developer}
+{\bf For oneself:}
+\begin{itemize}
+    \item Solve Problems!
+    \item {\bf Toolbox for cleaner, better, faster designs}
+    \item Better communication/confidence
+    \item Know/intuit what is a good/bad/solvable/unsolvable problem
+    \item Helpful working with AI
+\end{itemize}
+\bigskip
+\bigskip
+\bigskip
+
+{\bf Industry:}
+\begin{itemize}
+    \item Way to screen candidates
+    \item Performance/costs awareness or optimisation
+    \item Communication is key!
+\end{itemize}
+
+\end{frame}
+
+
+\section{Omnipresence and examples of Algorithms}
+
+\begin{frame}
+    \frametitle{\bf  Omnipresence  of Algorithms}
+Commercial, Fin., Tech., Industry, Economy, \textcolor{new_turquoise}{\bf AI}: 
+
+
+
+\begin{figure}
+    \centering
+\includegraphics[width=3cm,angle=0]{Algos_figs/tot_cover.png}
+\includegraphics[width=3cm,angle=0]{Algos_figs/tree_based_experimentation.png}
+\includegraphics[width=3cm,angle=0]{Algos_figs/rag.png}
+    \caption{Tree Of Thoughts/ Tree based Experimentation for AI Researcher/ RAG}
+\end{figure}
+
+
+\begin{figure}
+    \centering
+    \includegraphics[width=4cm, height=2cm,angle=0]{Algos_figs/PageRanks-Example.svg.png}
+    \includegraphics[width=4cm, height=2cm,angle=0]{Algos_figs/yandex.png}
+    \caption{Left: PageRank, Right: Yandex}
+\end{figure}
+
+\end{frame}
+
+
+
+
+
+
+
+\begin{frame}
+\frametitle{\bf Introductory Examples}
+\begin{figure}
+    \centering
+    \includegraphics[width=4cm,angle=0]{Algos_figs/330px-Rhind_Mathematical_Papyrus.jpg}
+    \includegraphics[angle=0,width=4cm]{Algos_figs/Fibo_Lattice.png}
+    \caption{Left Rhind Papyrus, Right, Fibonacci Lattice}
+    \label{fig:placeholder}
+\end{figure}
+
+\begin{itemize}
+    \item Multiplication Algorithms: 
+        \begin{itemize}
+            \item Peasant Multiplication ($\sim 2000 $ BC, Rhind Papyrus)
+            \item Fibonacci Lattice $\sim 1600$
+        \end{itemize}
+    \item Real World Example: naive $N^2$ sorting taking days!
+    
+\end{itemize}
+
+\end{frame}
+
+
+
+\section{Algorithms Analysis}
+
+
+\begin{frame}
+{Algorithmic Performance Model}
+
+Random Access Machine {\bf RAM} model: 
+
+\begin{itemize}
+    \item $\approx$ computer independant
+    \item each operation take $\approx$ same compute
+    \item operation input size $\approx$ independant
+    \item input
+\end{itemize}
+\medskip
+{\bf Operations:} 
+\begin{enumerate}
+    \item $+,-, *, /, ...$
+    \item return and comparisons $==, >, <, \geq, \leq, \% , ...$
+    \item variables access, allocation or change
+\end{enumerate}
+!!!Subroutines or iterations are not considered operations!!! \\
+\bigskip
+
+\textcolor{new_turquoise}{\bf This is an approximation!!!}
+\end{frame}
+
+\begin{frame}
+{Full Analysis: Insertion sort}
+
+\begin{figure}
+    \centering
+    \includegraphics[width=5cm,angle=0]{Algos_figs/insertion_sort.png}
+    \includegraphics[angle=0,width=5cm]{Algos_figs/insertion_sort_costs.png}
+    \caption{Left: schema, Right: code}
+\end{figure}
+
+Full Analysis:
+\footnotesize
+\begin{align*}
+\#(n) = {} & c_1 n + c_2 (n-1) + c_4 (n-1) + c_5 \sum_{i=2}^n t_i + (c_6 + c_7) \sum_{i=2}^n (t_i - 1) + c_8 (n-1) \\
+    = {}  & (c_5 + c_6 + c_7)/2 n^2 + (c1 + c2 + c4 + c5 - c6 - c7 + c8)n \\
+    - {} & (c2 + c4 + c5 + c8), \quad  \mathrm{with} \,\sum_{i=2}^n t_i =  \frac{n(n+1)}{2} -1, \, \sum_{i=2}^n (t_i-1)  = \frac{n(n-1)}{2} 
+\end{align*}
+... Tedious to analyse like this...
+\end{frame}
+
+\begin{frame}
+{Approximating Performance}
+
+\begin{itemize}
+    \item Time Complexity: \\
+    Best, Worst, and Average-case Complexity 
+    \item Space Complexity:
+     total memory an algorithm requires to solve a problem
+\end{itemize}
+\bigskip 
+Both quantities vary a lot for some algorithms: \\
+$\Rightarrow$ simplify with  assymptotic $\mathcal{O}$ notations.
+
+\end{frame}
+
+
+
+
+
+\begin{frame}
+{$\mathcal{O}$, $\Theta$, $\Omega$ asymptotic Notations}
+
+Ideas: \\
+\begin{enumerate}
+    \item Routines like functions scaling with the problem size $N: f(N)$
+    \item At $N$ large, $ N \ll N\mathrm{log}(N) \ll N^2 \ll ... \ll \exp(N) $
+     \\ 
+$\Rightarrow$ For approximation, just scale matters!
+\end{enumerate}
+
+
+\begin{itemize}
+    \item $\vb{\mathcal{O}}$: {\bf Big O notation}
+    \item $\Theta$: upper bound
+
+    \item $\Omega$: lower bound
+\end{itemize}
+
+\smallskip
+Examples:
+\begin{enumerate}
+    \item $\#_1(n)=n$, $\#_2(n)=3n +6$, $\#_3(n) = 15n$: $\Theta(n), \mathcal{O}(n)$,$\Omega(n)$. 
+    \item $\#(n) = 7n^3 + 100n^2 + 20n $ is $\Theta(n^3), \mathcal{O}(n^3)$, $\Omega(n^2)$
+    \item $\#(x) = (13+2+7+1111)n^{45}$ is  $\Theta(n^{45}), \mathcal{O}(n^{45})$, $\Omega(n^{45})$ 
+\end{enumerate}
+
+\end{frame}
+
+
+
+\begin{frame}
+    {Usage of $\mathcal{O}$ notations}
+
+Most of the time, we are interested in $\mathcal{O}$ and use it for:
+\begin{itemize}
+    \item Algorithm Analysis
+    \item Algorithm Comparisons
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=4cm, height=2cm,angle=0]{Algos_figs/dubRF.png}
+\includegraphics[width=4cm, height=2cm,angle=0]{Algos_figs/PB0M1.png}
+\includegraphics[width=4cm, height=2cm,angle=0]{Algos_figs/fdcL3.png}
+
+\caption{$\mathcal{O}(N)=N^2 \,\, vs \,\, N\mathrm{log}N \,\, vs \,\, N$ as N increases}
+\end{figure}
+
+\end{frame}
+
+
+\begin{frame}
+{When/Why $\mathcal{O}(n) \approx log_2(n)$ }
+Consider, as for peasant multiplication: 
+$$T(n) \approx n/2 $$
+For a given n the algorithms decomposition takes m steps:
+\[
+n = 2^{\text{m}}
+\]
+\[
+\Rightarrow \log_2(n) = \text{m}
+\]
+
+
+\end{frame}
+
+\end{document}
