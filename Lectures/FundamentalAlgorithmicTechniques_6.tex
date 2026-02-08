@@ -1,0 +1,339 @@
+
+
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{url}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+\usepackage{lmodern}
+\usepackage{natbib}
+\usepackage{tikz}
+\usepackage{physics}
+\usepackage{graphicx} % Allows including images
+\graphicspath{ {./images/} }
+\usepackage{booktabs} % Allows the use of \toprule, \midrule and \bottomrule in tables
+\usetikzlibrary{mindmap, trees, shadows, shapes, calc, fadings, positioning, decorations.pathreplacing, intersections, shapes, arrows}
+
+%\usetheme{Hannover}
+%\usecolortheme{spruce}
+% EPIC FAIL
+\usetheme{default}
+%\usecolortheme{beetle}
+\usepackage{graphics}
+
+\usepackage{color}
+\definecolor{new_turquoise}{RGB}{40,151,158}%{251,190,94}
+\setbeamercolor{title}{fg=new_turquoise}
+
+
+%\usepackage[colorlinks=true, urlcolor=blue, linkcolor=red]{hyperref}
+
+
+\makeatletter
+\setbeamertemplate{frametitle}{
+    \ifbeamercolorempty[bg]{frametitle}{}{\nointerlineskip}%
+    \@tempdima=\textwidth%
+    \advance\@tempdima by\beamer@leftmargin%
+    \advance\@tempdima by\beamer@rightmargin%
+    \vspace*{0.8cm} 
+    %\hspace*{-3cm}
+    %%%%%%%%%%%%% For example insert shift to right
+    \begin{beamercolorbox}[sep=0.3cm,center,wd=\the\@tempdima]{frametitle}
+        \usebeamerfont{frametitle}%
+        \vbox{}\vskip-1ex%
+        \if@tempswa\else\csname beamer@ftecenter\endcsname\fi%
+        \strut\insertframetitle\strut\par%
+        {%
+            \ifx\insertframesubtitle\@empty%
+            \else%
+            {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}\insertframesubtitle\strut\par}%
+            \fi
+        }%
+        \vskip-1ex%
+        \if@tempswa\else\vskip-.3cm\fi% set inside beamercolorbox... evil here...
+    \end{beamercolorbox}%
+}
+\makeatother
+
+\setbeamercolor{frametitle}{fg=new_turquoise}
+\setbeamertemplate{itemize item}{\color{new_turquoise}$\blacksquare$}
+\setbeamertemplate{itemize subitem}{\color{new_turquoise}$\blacksquare$}
+
+
+% --- ENUMERATE ITEMS ---
+\setbeamertemplate{enumerate item}{\color{new_turquoise}\insertenumlabel}
+\setbeamertemplate{enumerate subitem}{\color{new_turquoise}\insertsubenumlabel}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% --- COLOR THE TABLE OF CONTENTS ENTRIES ---
+\setbeamercolor{section in toc}{fg=new_turquoise}
+\setbeamercolor{subsection in toc}{fg=new_turquoise}
+\setbeamercolor{subsubsection in toc}{fg=new_turquoise}
+
+
+
+\usebackgroundtemplate{
+    \includegraphics[width=\paperwidth,height=\paperheight]{figs/slide-title.jpg}
+} 
+
+\title{\fontsize{49}{7.2}{\bf Fundamental Algorithmic Techniques V}}
+%\author{JW}
+\date{\color{new_turquoise}\today}
+%S\titlegraphic{\includegraphics[width=2cm]{figs/jw.png}}
+
+\begin{document}
+\frame{\titlepage}
+%% SLIDE 1 - INTRO TO THE TEAM
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usebackgroundtemplate{
+    \includegraphics[width=\paperwidth,height=\paperheight]{figs/slide-pages}
+} 
+
+
+\setbeamertemplate{subsection in toc}{
+  \color{new_turquoise}$\blacksquare$\color{black}~~\inserttocsubsection
+}
+
+
+% Outline frame
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+
+
+
+\section{The greedy algorithm paradigm} 
+\begin{frame}{The greedy algorithm paradigm}
+    %It’s fast and simple—but only correct for problems with the greedy choice property. 
+Best possible (greedy) choice right now, for immediate best outcome! \\
+\medskip 
+
+Requirements:
+\begin{enumerate}
+    \item {\bf greedy-choice property:} \\  
+    globally optimal solution $\Leftrightarrow$  local optimal (greedy) choices
+    \item {\bf optimal substructure}
+\end{enumerate}
+\bigskip 
+Examples where Greedy Algorithm is suboptimal
+\begin{itemize}
+    \item life!?
+    \item road...
+    \item 0-1 knapsack problem
+\end{itemize}
+    
+\end{frame}
+
+
+\begin{frame}{Examples with Greedy: Courses Allocation}
+\begin{columns}[T] % align columns at the top
+    \begin{column}{0.55\textwidth}
+        \textbf{Course allocation:}\\
+        For starting time $\mathrm{T}$:
+        \begin{itemize}
+        \item Select out courses with starting $< \mathrm{T}$
+            \item Choose remaining course $C$ with lowest start time $T_{\text{end}}$
+            \item Update $\mathrm{T} \leftarrow C_{T_{\text{end}}}$
+        \end{itemize}
+    \end{column}
+    \begin{column}{0.4\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Algos_figs/GreedyClasses.png}
+    \end{column}
+\end{columns}
+\end{frame}
+
+
+
+%\begin{frame}{Examples with Greedy:  %Offline Cache} 
+%
+%\end{frame}
+
+
+\begin{frame}{Examples with Greedy: Cache Memory Management}
+\begin{columns}[T]
+    \begin{column}{0.6\textwidth}
+        On request for block $b_i$:
+        \begin{itemize}
+        \item \textbf{Hit:} $b_i$ is in cache → no change.
+            \item \textbf{Miss, cache not full:} add $b_i$.
+            \item \textbf{Miss, cache full:} evicts one block, add $b_i$. 
+        \end{itemize}
+
+    \bigskip
+    \bigskip
+
+    Greedy Strategy for cache allocation \\
+    removing less used cache blocks
+    
+    \end{column}
+    \begin{column}{0.5\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Algos_figs/cache.png}
+
+        %\centering
+        \includegraphics[width=\linewidth]{Algos_figs/fully_associative_mapping.png}
+
+        
+    \end{column}
+
+    
+\end{columns}
+\end{frame}
+
+
+
+\begin{frame}{Huffman Encoding Example}
+\begin{columns}[T]
+    \begin{column}{0.3\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{Algos_figs/HuffmanCodeAlg.png}
+    \end{column}
+    \begin{column}{0.7\textwidth}
+    \centering
+        \includegraphics[width=0.5\linewidth]{Algos_figs/Huffman_tree_2.svg.png}
+        \centering
+        \tiny
+        \begin{tabular}{l|c|c}
+            \textbf{Char} & \textbf{Freq} & \textbf{Code} \\
+            \hline
+            space & 7 & 111 \\
+            a     & 4 & 010 \\
+            e     & 4 & 000 \\
+            f     & 3 & 1101 \\
+            h     & 2 & 1010 \\
+            i     & 2 & 1000 \\
+            m     & 2 & 0111 \\
+            n     & 2 & 0010 \\
+            s     & 2 & 1011 \\
+            t     & 2 & 0110 \\
+            l     & 1 & 11001 \\
+            o     & 1 & 00110 \\
+            p     & 1 & 10011 \\
+            r     & 1 & 11000 \\
+            u     & 1 & 00111 \\
+            x     & 1 & 10010 \\
+        \end{tabular}
+    \end{column}
+
+\end{columns}
+\end{frame}
+
+
+\begin{frame}{Huffman Code: Numerical Example}
+\tiny
+\begin{tabular}{l|ccccc|c}
+\textbf{Input } $(A, W)$ & \multicolumn{5}{c|}{\textbf{Symbol } ($a_i$)} & \\
+                         & a & b & c & d & e & \textbf{Sum} \\ \hline
+\textbf{Weights } ($w_i$) & 0.10 & 0.15 & 0.30 & 0.16 & 0.29 & $=1$ \\ \hline
+\textbf{Output } $C$ & \multicolumn{5}{c|}{\textbf{Codewords } ($c_i$)} & \\
+                      & 010 & 011 & 11 & 00 & 10 & \\ \hline
+\textbf{Codeword length } ($\ell_i$) & 3 & 3 & 2 & 2 & 2 & \\ \hline
+$\ell_i w_i$ & 0.30 & 0.45 & 0.60 & 0.32 & 0.58 & $L(C) = 2.25$ \\ \hline
+\textbf{Optimality} & \multicolumn{5}{c|}{\textbf{Probability budget } ($2^{-\ell_i}$)} & \\
+                    & $1/8$ & $1/8$ & $1/4$ & $1/4$ & $1/4$ & $=1.00$ \\ \hline
+\textbf{Info. content } ($-\log_2 w_i$) & 3.32 & 2.74 & 1.74 & 2.64 & 1.79 & \\ \hline
+$-w_i \log_2 w_i$ & 0.332 & 0.411 & 0.521 & 0.423 & 0.518 & $H(A) = 2.205$
+\end{tabular}
+
+
+\bigskip
+\bigskip
+
+Huffman coding approximates the optimal lossless compression bound!
+\begin{itemize}
+\item The Huffman code minimizes the expected length:
+$
+L(C) = \sum_{i} w_i \, \ell_i
+$
+
+\item The (Shannon) entropy of the source is:
+$
+H(A) = -\sum_{i} w_i \log_2 w_i
+$
+
+\item Huffman coding is near-optimal:
+$
+H(A) \leq L(C) < H(A) + 1
+$
+\end{itemize}
+
+\end{frame}
+
+
+
+
+
+
+
+%\begin{frame}{ Examples where Greedy is optimal} 
+%Course allocation, Cache, Huffman coding and Shannon Entropy
+%\end{frame}
+
+%\begin{frame}{ Bellman ford} 
+%\end{frame}
+
+
+
+
+\section{Characteristics of greedy algorithms}
+
+
+
+\begin{frame}{Characteristics of Greedy Algorithms}
+
+In addition to greedy property and optimal substructures...
+\bigskip
+\begin{itemize}
+    
+  \item \textbf{A candidate set} – A solution is created from this set.
+    \item \textbf{A selection function} – Used to choose the best candidate to be added to the solution.
+    \item \textbf{A feasibility function} – Used to determine whether a candidate can be used to contribute to the solution.
+    \item \textbf{An objective function} – Used to assign a value to a solution or a partial solution.
+    \item \textbf{A solution function} – Used to indicate whether a complete solution has been reached.
+
+\end{itemize}
+\end{frame}
+
+\section{Correctness proof techniques}
+
+%\begin{frame}{Correctness Proof Techniques}
+%{\bf Greedy stays ahead!}
+%\begin{itemize}
+%    \item $A = \{a_0, a_1, \dots, a_n \}$ greedy algo. sequence and  $O = \{o_0, o_1, \dots, o_n \}$ optimal sequence
+%    \item choose a measure $\mu()$ or cost function.
+%    \item show stay ahead:\\ $\mu(a_0, a_1, \dots, a_n ) \leq \mu(o_0, o_1, \dots, o_n )$ by induction! 
+%    \item Prove optimality: use greedy stays ahead to generate contradiction
+%\end{itemize}
+%
+%\end{frame}
+
+
+\begin{frame}{Correctness Proof: Greedy Stays Ahead}
+\textbf{Idea:} Show greedy solution is \textit{at least as far along} as optimal after each step.
+
+\begin{itemize}
+    \item Let $A = (a_1, \dots, a_k)$ be greedy solution, $O = (o_1, \dots, o_m)$ optimal.
+    \item Define a \textbf{progress measure} $\pi(\cdot)$ (e.g., finish time, coverage).
+    \item \textbf{Key claim (by induction):} After $i$ steps, 
+    \[
+    \pi(a_1, \dots, a_i) \geq \pi(o_1, \dots, o_i)
+    \quad \text{(greedy is ``ahead'')}
+    \]
+    \item \textbf{Conclude optimality:} If greedy stays ahead for all $i$, then $k \geq m$. 
+    Since $O$ is optimal, $k = m$ → $A$ is optimal.
+\end{itemize}
+
+\vspace{0.5em}
+\bigskip
+\footnotesize
+Example: Interval scheduling (greedy picks earliest finish time).
+\end{frame}
+
+
+
+\end{document}
+
+
